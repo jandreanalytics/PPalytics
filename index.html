@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PayPal Dashboard</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Add Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -36,12 +37,91 @@
                 </div>
             </div>
 
+            <div class="analytics-section">
+                <h2>Business Analytics</h2>
+                
+                <div class="analytics-grid">
+                    <div class="card customer-stats">
+                        <h3>Customer Overview</h3>
+                        <div class="stat-group">
+                            <div class="stat">
+                                <label>Total Customers</label>
+                                <p id="totalCustomers">0</p>
+                            </div>
+                            <div class="stat">
+                                <label>Repeat Customers</label>
+                                <p id="repeatCustomers">0</p>
+                            </div>
+                            <div class="stat">
+                                <label>Avg. Transaction</label>
+                                <p id="avgTransaction">$0.00</p>
+                            </div>
+                            <div class="stat">
+                                <label>Median Transaction</label>
+                                <p id="medianTransaction">$0.00</p>
+                            </div>
+                            <div class="stat">
+                                <label>Total Transactions</label>
+                                <p id="totalTransactions">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card top-customers">
+                        <h3>Top Customers</h3>
+                        <div id="topCustomersList" class="list-content"></div>
+                    </div>
+
+                    <div class="card peak-months">
+                        <h3>Peak Months</h3>
+                        <div id="peakMonthsList" class="list-content"></div>
+                    </div>
+
+                    <div class="card time-distribution">
+                        <h3>Transaction Time Distribution</h3>
+                        <div id="timeDistribution" class="time-grid"></div>
+                    </div>
+
+                    <div class="card top-vendors">
+                        <h3>Top Vendors</h3>
+                        <div id="topVendorsList" class="list-content"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add graph containers -->
             <div class="charts-container">
                 <div class="chart-card">
-                    <canvas id="incomeChart"></canvas>
+                    <h3>Income vs Expenses Over Time</h3>
+                    <canvas id="incomeExpensesChart"></canvas>
                 </div>
                 <div class="chart-card">
-                    <canvas id="categoryChart"></canvas>
+                    <h3>Top Customers Revenue</h3>
+                    <canvas id="topCustomersChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Transaction Volume by Type</h3>
+                    <canvas id="transactionTypeChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Monthly Revenue Trend</h3>
+                    <canvas id="monthlyRevenueChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Net Cash Flow by Month</h3>
+                    <canvas id="cashFlowChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Cumulative Balance</h3>
+                    <canvas id="cumulativeBalanceChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Customer Growth</h3>
+                    <canvas id="customerGrowthChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Transaction Amount Distribution</h3>
+                    <canvas id="transactionDistributionChart"></canvas>
                 </div>
             </div>
         </div>

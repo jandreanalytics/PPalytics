@@ -53,20 +53,6 @@ header {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.charts-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.chart-card {
-    background: white;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
 button {
     padding: 0.5rem 1rem;
     background-color: #0066cc;
@@ -210,4 +196,103 @@ select {
 
 .modal-actions button.primary:hover {
     background-color: #0052a3;
+}
+
+.analytics-section {
+    margin-top: 2rem;
+}
+
+.analytics-section h2 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat label {
+    display: block;
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.stat p {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0066cc;
+}
+
+.list-content {
+    margin-top: 1rem;
+}
+
+.list-content .item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.list-content .item:last-child {
+    border-bottom: none;
+}
+
+.time-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.time-block {
+    padding: 0.5rem;
+    text-align: center;
+    background: #f0f0f0;
+    border-radius: 4px;
+    font-size: 0.8em;
+}
+
+.time-block.active {
+    background: #0066cc;
+    color: white;
+}
+
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.chart-card h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+canvas {
+    width: 100% !important;
+    height: 300px !important;
 }
