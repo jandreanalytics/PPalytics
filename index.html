@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayPal Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PayPal Transaction Dashboard</h1>
+        </header>
+        
+        <div class="upload-section">
+            <div id="dropZone" class="drop-zone">
+                <p>Drag & Drop PayPal CSV or Click to Upload</p>
+                <input type="file" id="fileInput" accept=".csv" hidden>
+            </div>
+        </div>
+
+        <div class="dashboard hidden" id="dashboard">
+            <div class="summary-cards">
+                <div class="card">
+                    <h3>Total Income</h3>
+                    <p id="totalIncome">$0.00</p>
+                </div>
+                <div class="card">
+                    <h3>Total Expenses</h3>
+                    <p id="totalExpenses">$0.00</p>
+                </div>
+                <div class="card">
+                    <h3>Net Balance</h3>
+                    <p id="netBalance">$0.00</p>
+                </div>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-card">
+                    <canvas id="incomeChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recurring Payments Modal -->
+    <div id="recurringModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Significant Recurring Payments Detected</h2>
+                <p>We've identified recurring payments that may be critical to your business.</p>
+                <p class="threshold-note">Only recurring payments exceeding $500 or related to business services are shown.</p>
+            </div>
+            
+            <div class="recurring-list">
+                <table id="recurringTable">
+                    <thead>
+                        <tr>
+                            <th>Vendor Name</th>
+                            <th>Payment Frequency</th>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="modal-actions">
+                <button id="markAllBtn">Mark All as Business Expense</button>
+                <button id="ignoreAllBtn">Ignore All</button>
+                <button id="confirmBtn" class="primary">Confirm & Save</button>
+                <button id="dismissBtn">Dismiss for Now</button>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
