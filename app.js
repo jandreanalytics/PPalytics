@@ -374,6 +374,10 @@ function updateCharts(transactions) {
     createCumulativeBalanceChart(transactions);
     createCustomerGrowthChart(transactions);
     createTransactionDistributionChart(transactions);
+    createDailyPatternChart(transactions);
+    createCategoryDistributionChart(transactions);
+    createPaymentMethodsChart(transactions);
+    createSeasonalRevenueChart(transactions);
 }
 
 function createIncomeExpensesChart(transactions) {
@@ -751,6 +755,191 @@ function createTransactionDistributionChart(transactions) {
                     title: {
                         display: true,
                         text: 'Transaction Amount Range ($)'
+                    }
+                }
+            }
+        }
+    });
+}
+
+function createDailyPatternChart(transactions) {
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dailyCounts = new Array(7).fill(0);
+    const dailyVolume = new Array(7).fill(0);
+
+    transactions.forEach(t => {
+        const date = new Date(t.date);
+        const dayIndex = date.getDay();
+        dailyCounts[dayIndex]++;
+        dailyVolume[dayIndex] += Math.abs(t.amount);
+    });
+
+    const ctx = document.getElementById('dailyPatternChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: daysOfWeek,
+            datasets: [{
+                label: 'Number of Transactions',
+                data: dailyCounts,
+                backgroundColor: '#2196F3',
+                yAxisID: 'y'
+            }, {
+                label: 'Transaction Volume ($)',
+                data: dailyVolume,
+                type: 'line',
+                borderColor: '#4CAF50',
+                yAxisID: 'y1'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    position: 'left'
+                },
+                y1: {
+                    beginAtZero: true,
+                    position: 'right',
+                    grid: {
+                        drawOnChartArea: false
+                    },
+                    ticks: {
+                        callback: value => formatCurrency(value)
+                    }
+                }
+            }
+        }
+    });
+}
+
+function createCategoryDistributionChart(transactions) {
+    const categoryData = transactions.reduce((acc, t) => {
+        if (t.category && t.category !== 'transfer') {
+            acc[t.category] = (acc[t.category] || 0) + Math.abs(t.amount);
+        }
+        return acc;
+    }, {});
+
+    const ctx = document.getElementById('categoryDistributionChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(categoryData),
+            datasets: [{
+                data: Object.values(categoryData),
+                backgroundColor: [
+                    '#FF9800', '#2196F3', '#4CAF50', '#9C27B0', 
+                    '#F44336', '#00BCD4', '#FFC107', '#795548'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: (context) => {
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = ((context.raw / total) * 100).toFixed(1);
+                            return `${formatCurrency(context.raw)} (${percentage}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function createPaymentMethodsChart(transactions) {
+    const methodData = transactions
+        .filter(t => t.amount > 0 && t.name.trim() !== '' && !['Reversal of General Account Hold', 'Refunds', 'Tax collected by partner'].includes(t.type)) // Only consider incoming payments from named businesses or people
+        .reduce((acc, t) => {
+            const method = t.type || 'Other';
+            acc[method] = (acc[method] || 0) + t.amount;
+            return acc;
+        }, {});
+
+    const ctx = document.getElementById('paymentMethodsChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(methodData),
+            datasets: [{
+                data: Object.values(methodData),
+                backgroundColor: [
+                    '#3F51B5', '#E91E63', '#009688', '#FF5722',
+                    '#607D8B', '#9C27B0', '#795548', '#FFEB3B'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right'
+                }
+            }
+        }
+    });
+}
+
+function createSeasonalRevenueChart(transactions) {
+    const seasons = {
+        'Winter': [12, 1, 2],
+        'Spring': [3, 4, 5],
+        'Summer': [6, 7, 8],
+        'Fall': [9, 10, 11]
+    };
+
+    const yearlySeasonData = transactions
+        .filter(t => t.amount > 0 && t.category !== 'transfer')
+        .reduce((acc, t) => {
+            const date = new Date(t.date);
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const season = Object.entries(seasons).find(([_, months]) => months.includes(month))[0];
+            
+            if (!acc[year]) acc[year] = {'Winter': 0, 'Spring': 0, 'Summer': 0, 'Fall': 0};
+            acc[year][season] += t.amount;
+            return acc;
+        }, {});
+
+    const years = Object.keys(yearlySeasonData);
+    const datasets = Object.keys(seasons).map(season => ({
+        label: season,
+        data: years.map(year => yearlySeasonData[year][season]),
+        borderColor: {
+            'Winter': '#2196F3',
+            'Spring': '#4CAF50',
+            'Summer': '#FFC107',
+            'Fall': '#FF5722'
+        }[season],
+        fill: false
+    }));
+
+    const ctx = document.getElementById('seasonalRevenueChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: years,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: value => formatCurrency(value)
                     }
                 }
             }
