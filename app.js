@@ -367,6 +367,8 @@ function updateDashboard(transactions) {
     updateSummaryCards(transactions);
     analyzeTransactions(transactions);
     updateCharts(transactions);
+    const taxAnalytics = analyzeTaxMetrics(transactions);
+    updateTaxDisplay(taxAnalytics);
 }
 
 function clearCharts() {
@@ -1042,6 +1044,10 @@ function analyzeTransactions(transactions) {
     };
     
     updateAnalyticsDisplay(analytics);
+
+    // Add tax analysis
+    const taxAnalytics = analyzeTaxMetrics(transactions);
+    updateTaxDisplay(taxAnalytics);
 }
 
 function calculateRetentionMetrics(transactions) {
@@ -1371,4 +1377,266 @@ function updateTimeDistribution(timeDistribution) {
                 </div>
             `;
         }).join('');
+}
+
+function analyzeTaxMetrics(transactions) {
+    const years = [...new Set(transactions.map(t => new Date(t.date).getFullYear()))];
+    const latestYear = Math.max(...years);
+    
+    const taxData = {
+        years: years.sort(),
+        selectedYear: latestYear,
+        income: {
+            business: 0,
+            personal: 0,
+            categories: {},
+            sources: {}
+        },
+        expenses: {
+            business: 0,
+            personal: 0,
+            deductible: {
+                software: 0,
+                services: 0,
+                supplies: 0,
+                fees: 0,
+                other: 0
+            }
+        },
+        quarterly: {
+            Q1: { income: 0, expenses: 0 },
+            Q2: { income: 0, expenses: 0 },
+            Q3: { income: 0, expenses: 0 },
+            Q4: { income: 0, expenses: 0 }
+        }
+    };
+
+    // Filter transactions for selected year
+    const yearTransactions = transactions.filter(t => 
+        new Date(t.date).getFullYear() === latestYear
+    );
+
+    yearTransactions.forEach(t => {
+        const date = new Date(t.date);
+        const quarter = Math.floor(date.getMonth() / 3) + 1;
+        const quarterKey = `Q${quarter}`;
+        const amount = Math.abs(t.amount);
+
+        if (t.amount > 0) { // Income
+            if (isBusinessIncome(t)) {
+                taxData.income.business += amount;
+                taxData.quarterly[quarterKey].income += amount;
+                
+                const source = categorizeIncomeSource(t);
+                taxData.income.sources[source] = (taxData.income.sources[source] || 0) + amount;
+            } else {
+                taxData.income.personal += amount;
+            }
+        } else { // Expenses
+            if (isBusinessExpense(t)) {
+                taxData.expenses.business += amount;
+                taxData.quarterly[quarterKey].expenses += amount;
+                
+                const expenseCategory = categorizeBusinessExpense(t);
+                taxData.expenses.deductible[expenseCategory] = 
+                    (taxData.expenses.deductible[expenseCategory] || 0) + amount;
+            } else {
+                taxData.expenses.personal += amount;
+            }
+        }
+    });
+
+    return taxData;
+}
+
+function updateTaxDisplay(taxData) {
+    const taxSummary = document.getElementById('taxSummary');
+    taxSummary.innerHTML = `
+        <h3>Business Records Summary (${taxData.selectedYear})</h3>
+        <div class="tax-grid">
+            <div class="tax-item">
+                <h4>Business Income</h4>
+                <p>${formatCurrency(taxData.income.business)}</p>
+                <div class="tax-breakdown">
+                    ${Object.entries(taxData.income.sources)
+                        .map(([source, amount]) => 
+                            `<div class="breakdown-item">
+                                <span>${source}:</span>
+                                <span>${formatCurrency(amount)}</span>
+                             </div>`
+                        ).join('')}
+                </div>
+            </div>
+            <div class="tax-item">
+                <h4>Business Expenses</h4>
+                <p>${formatCurrency(taxData.expenses.business)}</p>
+                <div class="tax-breakdown">
+                    ${Object.entries(taxData.expenses.deductible)
+                        .map(([category, amount]) => 
+                            `<div class="breakdown-item">
+                                <span>${category}:</span>
+                                <span>${formatCurrency(amount)}</span>
+                             </div>`
+                        ).join('')}
+                </div>
+            </div>
+            <div class="tax-item">
+                <h4>Net Business Income</h4>
+                <p>${formatCurrency(taxData.income.business - taxData.expenses.business)}</p>
+                <div class="notice">
+                    <small>For tax preparation purposes only.<br>Consult a tax professional for advice.</small>
+                </div>
+            </div>
+            <div class="tax-item">
+                <h4>Quarterly Breakdown</h4>
+                <div class="quarterly-data">
+                    ${Object.entries(taxData.quarterly)
+                        .map(([quarter, data]) => `
+                            <div class="quarter-summary">
+                                <strong>${quarter}</strong>
+                                <div>Income: ${formatCurrency(data.income)}</div>
+                                <div>Expenses: ${formatCurrency(data.expenses)}</div>
+                                <div>Net: ${formatCurrency(data.income - data.expenses)}</div>
+                            </div>
+                        `).join('')}
+                </div>
+            </div>
+        </div>
+        <div class="tax-actions">
+            <button onclick="exportTaxData()" class="export-btn">Export Records</button>
+        </div>
+    `;
+}
+
+function exportTaxData() {
+    const years = [...new Set(transactions.map(t => new Date(t.date).getFullYear()))];
+    const defaultYear = Math.max(...years);
+    const yearSelector = document.getElementById('yearSelector');
+    const selectedYear = yearSelector.value === 'all' ? defaultYear : parseInt(yearSelector.value);
+    
+    const yearTransactions = transactions.filter(t => 
+        new Date(t.date).getFullYear() === selectedYear &&
+        isBusinessTransaction(t)
+    );
+
+    if (yearTransactions.length === 0) {
+        alert(`No business transactions found for year ${selectedYear}`);
+        return;
+    }
+
+    const taxData = analyzeTaxMetrics(yearTransactions);
+    
+    // Create workbook with multiple sheets
+    const wb = XLSX.utils.book_new();
+
+    const sheets = {
+        "Summary": [
+            [`PayPal Business Records for ${selectedYear}`, ''],
+            ['Generated', new Date().toLocaleDateString()],
+            ['', ''],
+            ['NOTICE', 'This export is for record-keeping purposes only'],
+            ['', 'Please consult a tax professional for tax advice'],
+            ['', ''],
+            ['Business Income', taxData.income.business],
+            ['Business Expenses', taxData.expenses.business],
+            ['Net Business Income', taxData.income.business - taxData.expenses.business]
+        ],
+        "Income Sources": [
+            ['Source', 'Amount'],
+            ...Object.entries(taxData.income.sources)
+        ],
+        "Expense Categories": [
+            ['Category', 'Amount'],
+            ...Object.entries(taxData.expenses.deductible)
+        ],
+        "Quarterly": [
+            ['Quarter', 'Income', 'Expenses', 'Net'],
+            ...Object.entries(taxData.quarterly).map(([q, data]) => [
+                q,
+                data.income,
+                data.expenses,
+                data.income - data.expenses
+            ])
+        ],
+        "Transactions": [
+            ['Date', 'Type', 'Name', 'Amount', 'Category', 'Notes'],
+            ...yearTransactions
+                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .map(t => [
+                    new Date(t.date),
+                    t.type,
+                    t.name,
+                    t.amount,
+                    t.category,
+                    t.amount > 0 ? 'Income' : 'Expense'
+                ])
+        ]
+    };
+
+    // Add sheets with formatting
+    Object.entries(sheets).forEach(([name, data]) => {
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        ws['!cols'] = Array(data[0].length).fill({ wch: 15 });
+        XLSX.utils.book_append_sheet(wb, ws, name);
+    });
+
+    const timestamp = new Date().toISOString().split('T')[0];
+    const fileName = `PayPal_Business_Records_${selectedYear}_${timestamp}.xlsx`;
+    XLSX.writeFile(wb, fileName);
+}
+
+function isBusinessIncome(transaction) {
+    return transaction.category === 'business' || 
+           transaction.type === 'Express Checkout Payment' ||
+           transaction.type === 'General Payment' ||
+           (transaction.amount > 0 && isBusinessVendor(transaction.name));
+}
+
+function isBusinessExpense(transaction) {
+    return transaction.category === 'business' ||
+           transaction.type === 'Subscription Payment' ||
+           (transaction.amount < 0 && isBusinessVendor(transaction.name));
+}
+
+function categorizeIncomeSource(transaction) {
+    if (transaction.type.includes('Subscription')) return 'Recurring';
+    if (transaction.type.includes('Express Checkout')) return 'Online Store';
+    if (transaction.type.includes('Marketplace')) return 'Marketplace';
+    return 'Direct Payment';
+}
+
+function categorizeBusinessExpense(transaction) {
+    const name = transaction.name.toLowerCase();
+    const type = transaction.type.toLowerCase();
+
+    if (type.includes('subscription') || 
+        name.includes('adobe') || 
+        name.includes('microsoft') || 
+        name.includes('dropbox')) {
+        return 'software';
+    }
+    
+    if (name.includes('hosting') || 
+        name.includes('service') || 
+        type.includes('service')) {
+        return 'services';
+    }
+    
+    if (name.includes('paypal fee') || 
+        name.includes('processing fee')) {
+        return 'fees';
+    }
+    
+    if (name.includes('supplies') || 
+        name.includes('materials')) {
+        return 'supplies';
+    }
+    
+    return 'other';
+}
+
+function isBusinessTransaction(transaction) {
+    return transaction.category === 'business' || 
+           isBusinessIncome(transaction) || 
+           isBusinessExpense(transaction);
 }

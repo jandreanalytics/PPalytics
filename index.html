@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="styles.css">
     <!-- Add Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Add SheetJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -175,6 +177,12 @@
                 <div class="chart-card">
                     <h3>Seasonal Revenue Analysis</h3>
                     <canvas id="seasonalRevenueChart"></canvas>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <div id="taxSummary" class="tax-summary">
+                    <!-- Tax summary will be populated by JavaScript -->
                 </div>
             </div>
         </div>
