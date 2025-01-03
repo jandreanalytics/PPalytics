@@ -19,6 +19,129 @@
             <h1>PayPal Transaction Dashboard</h1>
         </header>
         
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="instructions">How to Use</button>
+                <button class="tab-btn" data-tab="about">About Me</button>
+                <button class="tab-btn" data-tab="resources">Resources</button>
+            </div>
+            
+            <div class="tab-content active" id="instructions">
+                <h2>How to Use This Dashboard</h2>
+                <ol>
+                    <li><strong>Export Your PayPal Data:</strong>
+                        <ul>
+                            <li>Log into your PayPal account</li>
+                            <li>Go to Statements > Activity > Download</li>
+                            <li>Select "Balance affecting payments"</li>
+                            <li>Choose your date range</li>
+                            <li>Select CSV format</li>
+                            <li>Click "Create Report"</li>
+                        </ul>
+                    </li>
+                    <li><strong>Upload Your Data:</strong>
+                        <ul>
+                            <li>Drag and drop your CSV file into the upload zone below</li>
+                            <li>Or click to select the file manually</li>
+                        </ul>
+                    </li>
+                    <li><strong>Analyze Your Data:</strong>
+                        <ul>
+                            <li>Review automatic business transaction detection</li>
+                            <li>Confirm recurring payment categories</li>
+                            <li>Explore visualizations and insights</li>
+                            <li>Export reports for tax purposes</li>
+                        </ul>
+                    </li>
+                </ol>
+                <div class="notice">
+                    <p>⚠️ Important: Make sure to select "Balance affecting payments" when downloading your PayPal report for accurate analysis.</p>
+                    <p>This tool processes data locally in your browser. No information is uploaded to any server.</p>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="about">
+                <h2>About the Developer & Tool</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>Jeremy Andre</h3>
+                        <p>I originally built this dashboard to solve my own needs - as someone doing a lot of business through PayPal, I needed a better way to analyze my transaction patterns and prepare for tax season. While PayPal's built-in tools are useful, I wanted deeper insights and more flexible analysis options.</p>
+                        <p>After seeing how helpful it was for my own business operations, I decided to make it available to others who might face similar challenges. The tool combines my background in data analysis with practical business needs, creating visualizations and insights that make financial data more actionable.</p>
+                        <p>Since I actively use this tool for my own business, I'm continuously adding features and improvements based on real-world usage and needs. Feel free to check out my other projects and tools at <a href="http://jkandre.science" target="_blank">jkandre.science</a>.</p>
+                        <div class="social-links">
+                            <a href="https://github.com/jandreanalytics" target="_blank">GitHub</a>
+                            <a href="https://www.linkedin.com/in/jeremy-andre-a18925241/" target="_blank">LinkedIn</a>
+                            <a href="http://jkandre.science" target="_blank">Portfolio</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="resources">
+                <h2>PayPal Business Resources</h2>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3>PayPal Business Tools</h3>
+                        <ul>
+                            <li><a href="https://www.paypal.com/us/business/resources" target="_blank">PayPal Business Resource Center</a></li>
+                            <li><a href="https://www.paypal.com/us/business" target="_blank">PayPal Business Hub</a></li>
+                            <li><a href="https://www.paypal.com/us/webapps/mpp/payment-methods" target="_blank">Payment Solutions Guide</a></li>
+                            <li><a href="https://www.paypal.com/us/smarthelp/home" target="_blank">PayPal Business Help Center</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3>Transaction Management</h3>
+                        <ul>
+                            <li><a href="https://www.paypal.com/us/webapps/mpp/security/transaction-monitoring" target="_blank">Transaction Monitoring Tools</a></li>
+                            <li><a href="https://www.paypal.com/us/business/accept-payments" target="_blank">Payment Acceptance Guide</a></li>
+                            <li><a href="https://www.paypal.com/us/business/recurring-payments" target="_blank">Recurring Payments Setup</a></li>
+                            <li><a href="https://www.paypal.com/us/brc/article/understanding-dispute-resolution" target="_blank">Dispute Resolution Guide</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3>Integration & APIs</h3>
+                        <ul>
+                            <li><a href="https://developer.paypal.com/home" target="_blank">PayPal Developer Portal</a></li>
+                            <li><a href="https://developer.paypal.com/api/rest/" target="_blank">REST API Documentation</a></li>
+                            <li><a href="https://developer.paypal.com/docs/checkout/" target="_blank">PayPal Checkout Integration</a></li>
+                            <li><a href="https://developer.paypal.com/tools/" target="_blank">Developer Tools</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3>Financial Reports</h3>
+                        <ul>
+                            <li><a href="https://www.paypal.com/us/webapps/mpp/merchant-reporting" target="_blank">Merchant Reporting Tools</a></li>
+                            <li><a href="https://www.paypal.com/us/brc/article/understanding-transaction-fees" target="_blank">Fee Structure Guide</a></li>
+                            <li><a href="https://www.paypal.com/us/brc/article/tax-reporting-basics" target="_blank">Tax Reporting Guide</a></li>
+                            <li><a href="https://www.paypal.com/us/brc/article/paypal-reports-and-downloads" target="_blank">Report Downloads Guide</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3>Business Protection</h3>
+                        <ul>
+                            <li><a href="https://www.paypal.com/us/webapps/mpp/security/seller-protection" target="_blank">Seller Protection Program</a></li>
+                            <li><a href="https://www.paypal.com/us/brc/article/understanding-fraud-prevention" target="_blank">Fraud Prevention Guide</a></li>
+                            <li><a href="https://www.paypal.com/us/security/secure-seller-overview" target="_blank">Security Best Practices</a></li>
+                            <li><a href="https://www.paypal.com/us/business/data-security" target="_blank">Data Security Guide</a></li>
+                        </ul>
+                    </div>
+                    <div class="resource-card">
+                        <h3>Business Growth</h3>
+                        <ul>
+                            <li><a href="https://www.paypal.com/us/business/cross-border-trade" target="_blank">International Sales Guide</a></li>
+                            <li><a href="https://www.paypal.com/us/business/marketing-solutions" target="_blank">Marketing Solutions</a></li>
+                            <li><a href="https://www.paypal.com/us/business/working-capital" target="_blank">PayPal Working Capital</a></li>
+                            <li><a href="https://www.paypal.com/us/business/invoicing" target="_blank">Invoicing Solutions</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="resources-notice">
+                    <p>💡 These resources are specifically curated for PayPal business users to help maximize their payment processing and business management capabilities.</p>
+                </div>
+            </div>
+
+        </div>
+
         <div class="upload-section">
             <div id="dropZone" class="drop-zone">
                 <p>Drag & Drop PayPal CSV or Click to Upload</p>
