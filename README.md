@@ -11,14 +11,14 @@
 <p align="center">
     A powerful, browser-based analytics tool for PayPal transaction data with advanced visualization and business insights
     <br />
-    <a href="https://github.com/jandreanalytics/paypal-transaction-dashboard"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/jandreanalytics/PPalytics"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://jkandre.science/projects/paypal-dashboard">View Demo</a>
     ·
-    <a href="https://github.com/jandreanalytics/paypal-transaction-dashboard/issues">Report Bug</a>
+    <a href="https://github.com/jandreanalytics/PPalytics/issues">Report Bug</a>
     ·
-    <a href="https://github.com/jandreanalytics/paypal-transaction-dashboard/issues">Request Feature</a>
+    <a href="https://github.com/jandreanalytics/PPalytics/issues">Request Feature</a>
   </p>
 </div>
 
@@ -42,10 +42,10 @@
 ## About The Project
 
 <div align="center">
-  <img src="images/dashboard-preview.png" alt="Dashboard Preview">
+  <img src="PayPal-Dashboard.png" alt="PPalytics Dashboard Preview">
 </div>
 
-The PayPal Transaction Dashboard is a client-side web application I developed to solve a common challenge faced by small business owners and freelancers: making sense of their PayPal transaction data. What started as a personal tool to analyze my own business transactions evolved into a comprehensive analytics platform that helps users:
+PPalytics is a client-side web application I developed to solve a common challenge faced by small business owners and freelancers: making sense of their PayPal transaction data. What started as a personal tool to analyze my own business transactions evolved into a comprehensive analytics platform that helps users:
 
 - Visualize income and expense patterns
 - Track customer retention and growth
@@ -55,7 +55,7 @@ The PayPal Transaction Dashboard is a client-side web application I developed to
 
 ### Origin Story
 
-I built this tool initially for my own use when I noticed PayPal's built-in analytics weren't providing the depth of insight I needed for business decisions. After sharing it with other freelancers and receiving positive feedback, I refined it into a more comprehensive solution that could help others in similar situations.
+I built PPalytics initially for my own use when I noticed PayPal's built-in analytics weren't providing the depth of insight I needed for business decisions. After sharing it with other freelancers and receiving positive feedback, I refined it into a more comprehensive solution that could help others in similar situations.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -244,14 +244,10 @@ Project Link: [https://github.com/jandreanalytics/paypal-transaction-dashboard](
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
-
-````
-
-````
-
-[contributors-shield]: https://img.shields.io/github/contributors/jandreanalytics/paypal-transaction-dashboard.svg?style=for-the-badge
-[contributors-url]: https://github.com/jandreanalytics/paypal-transaction-dashboard/graphs/contributors
-[license-shield]: https://img.shields.io/github/license/jandreanalytics/paypal-transaction-dashboard.svg?style=for-the-badge
-[license-url]: https://github.com/jandreanalytics/paypal-transaction-dashboard/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/jandreanalytics/PPalytics.svg?style=for-the-badge
+[contributors-url]: https://github.com/jandreanalytics/PPalytics/graphs/contributors
+[license-shield]: https://img.shields.io/github/license/jandreanalytics/PPalytics.svg?style=for-the-badge
+[license-url]: https://github.com/jandreanalytics/PPalytics/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/jeremy-andre-a18925241/
+`````

@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0f172a">
     <meta name="description" content="PayPal Transaction Dashboard - Analyze your PayPal transactions with detailed insights and visualizations">
+    <meta name="keywords" content="PayPal, analytics, business, transactions, dashboard, finance">
+    <meta name="author" content="Jeremy Andre">
     <title>PayPal Dashboard</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -69,7 +73,7 @@
                         <p>After seeing how helpful it was for my own business operations, I decided to make it available to others who might face similar challenges. The tool combines my background in data analysis with practical business needs, creating visualizations and insights that make financial data more actionable.</p>
                         <p>Since I actively use this tool for my own business, I'm continuously adding features and improvements based on real-world usage and needs. Feel free to check out my other projects and tools at <a href="http://jkandre.science" target="_blank">jkandre.science</a>.</p>
                         <div class="social-links">
-                            <a href="https://github.com/jandreanalytics" target="_blank">GitHub</a>
+                            <a href="https://github.com/jandreanalytics/PPalytics" target="_blank">GitHub</a>
                             <a href="https://www.linkedin.com/in/jeremy-andre-a18925241/" target="_blank">LinkedIn</a>
                             <a href="http://jkandre.science" target="_blank">Portfolio</a>
                         </div>
@@ -81,57 +85,57 @@
                 <h2>PayPal Business Resources</h2>
                 <div class="resources-grid">
                     <div class="resource-card">
-                        <h3>PayPal Business Tools</h3>
+                        <h3>Business Communities</h3>
                         <ul>
-                            <li><a href="https://www.paypal.com/us/business/resources" target="_blank">PayPal Business Resource Center</a></li>
-                            <li><a href="https://www.paypal.com/us/business" target="_blank">PayPal Business Hub</a></li>
-                            <li><a href="https://www.paypal.com/us/webapps/mpp/payment-methods" target="_blank">Payment Solutions Guide</a></li>
-                            <li><a href="https://www.paypal.com/us/smarthelp/home" target="_blank">PayPal Business Help Center</a></li>
+                            <li><a href="https://www.reddit.com/r/smallbusiness/" target="_blank">r/smallbusiness</a></li>
+                            <li><a href="https://www.reddit.com/r/Entrepreneur/" target="_blank">r/Entrepreneur</a></li>
+                            <li><a href="https://www.reddit.com/r/freelance/" target="_blank">r/freelance</a></li>
+                            <li><a href="https://www.reddit.com/r/personalfinance/" target="_blank">r/personalfinance</a></li>
                         </ul>
                     </div>
                     <div class="resource-card">
-                        <h3>Transaction Management</h3>
+                        <h3>Free Tax Resources</h3>
                         <ul>
-                            <li><a href="https://www.paypal.com/us/webapps/mpp/security/transaction-monitoring" target="_blank">Transaction Monitoring Tools</a></li>
-                            <li><a href="https://www.paypal.com/us/business/accept-payments" target="_blank">Payment Acceptance Guide</a></li>
-                            <li><a href="https://www.paypal.com/us/business/recurring-payments" target="_blank">Recurring Payments Setup</a></li>
-                            <li><a href="https://www.paypal.com/us/brc/article/understanding-dispute-resolution" target="_blank">Dispute Resolution Guide</a></li>
+                            <li><a href="https://www.irs.gov/filing/free-file-do-your-federal-taxes-for-free" target="_blank">IRS Free File</a></li>
+                            <li><a href="https://www.freetaxusa.com/" target="_blank">FreeTaxUSA</a></li>
+                            <li><a href="https://www.irs.gov/businesses/small-businesses-self-employed" target="_blank">IRS Small Business Guide</a></li>
+                            <li><a href="https://www.freshbooks.com/blog/category/taxes" target="_blank">FreshBooks Tax Guides</a></li>
                         </ul>
                     </div>
                     <div class="resource-card">
-                        <h3>Integration & APIs</h3>
+                        <h3>Business Tools</h3>
                         <ul>
-                            <li><a href="https://developer.paypal.com/home" target="_blank">PayPal Developer Portal</a></li>
-                            <li><a href="https://developer.paypal.com/api/rest/" target="_blank">REST API Documentation</a></li>
-                            <li><a href="https://developer.paypal.com/docs/checkout/" target="_blank">PayPal Checkout Integration</a></li>
-                            <li><a href="https://developer.paypal.com/tools/" target="_blank">Developer Tools</a></li>
+                            <li><a href="https://www.waveapps.com/" target="_blank">Wave (Free Accounting)</a></li>
+                            <li><a href="https://www.zoho.com/invoice/" target="_blank">Zoho Invoice (Free)</a></li>
+                            <li><a href="https://www.canva.com/" target="_blank">Canva (Design)</a></li>
+                            <li><a href="https://www.notion.so/" target="_blank">Notion (Organization)</a></li>
                         </ul>
                     </div>
                     <div class="resource-card">
-                        <h3>Financial Reports</h3>
+                        <h3>PayPal Resources</h3>
                         <ul>
-                            <li><a href="https://www.paypal.com/us/webapps/mpp/merchant-reporting" target="_blank">Merchant Reporting Tools</a></li>
-                            <li><a href="https://www.paypal.com/us/brc/article/understanding-transaction-fees" target="_blank">Fee Structure Guide</a></li>
-                            <li><a href="https://www.paypal.com/us/brc/article/tax-reporting-basics" target="_blank">Tax Reporting Guide</a></li>
-                            <li><a href="https://www.paypal.com/us/brc/article/paypal-reports-and-downloads" target="_blank">Report Downloads Guide</a></li>
+                            <li><a href="https://www.paypal.com/us/smarthelp/article/how-do-i-download-my-transaction-history-faq1007" target="_blank">Transaction History Guide</a></li>
+                            <li><a href="https://www.paypal.com/us/webapps/mpp/security/seller-protection" target="_blank">Seller Protection</a></li>
+                            <li><a href="https://www.paypal.com/us/brc/topics/taxes" target="_blank">PayPal Tax Center</a></li>
+                            <li><a href="https://www.paypal.com/us/business/fraud-prevention" target="_blank">Fraud Prevention</a></li>
                         </ul>
                     </div>
                     <div class="resource-card">
-                        <h3>Business Protection</h3>
+                        <h3>Learning Resources</h3>
                         <ul>
-                            <li><a href="https://www.paypal.com/us/webapps/mpp/security/seller-protection" target="_blank">Seller Protection Program</a></li>
-                            <li><a href="https://www.paypal.com/us/brc/article/understanding-fraud-prevention" target="_blank">Fraud Prevention Guide</a></li>
-                            <li><a href="https://www.paypal.com/us/security/secure-seller-overview" target="_blank">Security Best Practices</a></li>
-                            <li><a href="https://www.paypal.com/us/business/data-security" target="_blank">Data Security Guide</a></li>
+                            <li><a href="https://www.sba.gov/learning-platform" target="_blank">SBA Learning Platform</a></li>
+                            <li><a href="https://www.coursera.org/courses?query=small%20business" target="_blank">Coursera Business Courses</a></li>
+                            <li><a href="https://www.edx.org/learn/entrepreneurship" target="_blank">edX Entrepreneurship</a></li>
+                            <li><a href="https://www.youtube.com/c/GrahamStephan" target="_blank">Finance YouTube Channel</a></li>
                         </ul>
                     </div>
                     <div class="resource-card">
-                        <h3>Business Growth</h3>
+                        <h3>Financial Planning</h3>
                         <ul>
-                            <li><a href="https://www.paypal.com/us/business/cross-border-trade" target="_blank">International Sales Guide</a></li>
-                            <li><a href="https://www.paypal.com/us/business/marketing-solutions" target="_blank">Marketing Solutions</a></li>
-                            <li><a href="https://www.paypal.com/us/business/working-capital" target="_blank">PayPal Working Capital</a></li>
-                            <li><a href="https://www.paypal.com/us/business/invoicing" target="_blank">Invoicing Solutions</a></li>
+                            <li><a href="https://www.investopedia.com/small-business/" target="_blank">Investopedia Business Guide</a></li>
+                            <li><a href="https://www.nerdwallet.com/business" target="_blank">NerdWallet Business</a></li>
+                            <li><a href="https://mint.intuit.com/" target="_blank">Mint Budgeting</a></li>
+                            <li><a href="https://www.score.org/resource-library" target="_blank">SCORE Resources</a></li>
                         </ul>
                     </div>
                 </div>
@@ -150,6 +154,11 @@
         </div>
 
         <div class="dashboard hidden" id="dashboard">
+            <div class="dashboard-actions">
+                <button onclick="exportDashboardPDF()" class="export-dashboard-btn">
+                    📄 Export Dashboard as PDF
+                </button>
+            </div>
             <div class="summary-cards">
                 <div class="card">
                     <h3>Total Income</h3>
@@ -256,21 +265,17 @@
             </div>
 
             <div class="charts-container">
+                <!-- Overview Charts -->
+                <div class="chart-card">
+                    <h3>Monthly Revenue Trend</h3>
+                    <button class="chart-download" onclick="downloadChart(this, 'monthlyRevenueChart')">
+                        📥 Save Chart
+                    </button>
+                    <canvas id="monthlyRevenueChart"></canvas>
+                </div>
                 <div class="chart-card">
                     <h3>Income vs Expenses Over Time</h3>
                     <canvas id="incomeExpensesChart"></canvas>
-                </div>
-                <div class="chart-card">
-                    <h3>Top Customers Revenue</h3>
-                    <canvas id="topCustomersChart"></canvas>
-                </div>
-                <div class="chart-card">
-                    <h3>Transaction Volume by Type</h3>
-                    <canvas id="transactionTypeChart"></canvas>
-                </div>
-                <div class="chart-card">
-                    <h3>Monthly Revenue Trend</h3>
-                    <canvas id="monthlyRevenueChart"></canvas>
                 </div>
                 <div class="chart-card">
                     <h3>Net Cash Flow by Month</h3>
@@ -280,29 +285,43 @@
                     <h3>Cumulative Balance</h3>
                     <canvas id="cumulativeBalanceChart"></canvas>
                 </div>
+
+                <!-- Customer Analysis -->
                 <div class="chart-card">
                     <h3>Customer Growth</h3>
                     <canvas id="customerGrowthChart"></canvas>
                 </div>
                 <div class="chart-card">
-                    <h3>Transaction Amount Distribution</h3>
-                    <canvas id="transactionDistributionChart"></canvas>
+                    <h3>Top Customers Revenue</h3>
+                    <canvas id="topCustomersChart"></canvas>
                 </div>
                 <div class="chart-card">
-                    <h3>Daily Transaction Pattern</h3>
-                    <canvas id="dailyPatternChart"></canvas>
+                    <h3>Seasonal Revenue Analysis</h3>
+                    <canvas id="seasonalRevenueChart"></canvas>
                 </div>
+
+                <!-- Transaction Analysis -->
                 <div class="chart-card">
                     <h3>Transaction Categories</h3>
                     <canvas id="categoryDistributionChart"></canvas>
                 </div>
                 <div class="chart-card">
+                    <h3>Transaction Volume by Type</h3>
+                    <canvas id="transactionTypeChart"></canvas>
+                </div>
+                <div class="chart-card">
                     <h3>Payment Methods</h3>
                     <canvas id="paymentMethodsChart"></canvas>
                 </div>
+
+                <!-- Pattern Analysis -->
                 <div class="chart-card">
-                    <h3>Seasonal Revenue Analysis</h3>
-                    <canvas id="seasonalRevenueChart"></canvas>
+                    <h3>Daily Transaction Pattern</h3>
+                    <canvas id="dailyPatternChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Transaction Amount Distribution</h3>
+                    <canvas id="transactionDistributionChart"></canvas>
                 </div>
             </div>
 

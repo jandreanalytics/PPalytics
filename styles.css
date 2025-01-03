@@ -136,9 +136,12 @@ header h1:hover {
 }
 
 .card:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-    border-color: rgba(59, 130, 246, 0.5);
+    transform: translateY(-5px);
+    box-shadow: 
+        0 10px 20px -8px rgba(0, 0, 0, 0.08),
+        0 4px 8px -4px rgba(0, 0, 0, 0.03);
+    border-color: #3b82f6;
+    background: rgba(255, 255, 255, 0.95);
 }
 
 .card::after {
@@ -573,14 +576,43 @@ select {
         0 4px 6px -1px rgba(0, 0, 0, 0.1),
         0 2px 4px -2px rgba(0, 0, 0, 0.05),
         0 0 15px rgba(59, 130, 246, 0.1);
+    position: relative;
+}
+
+.chart-download {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: #1e40af;
+    opacity: 0;
+}
+
+.chart-card:hover .chart-download {
+    opacity: 1;
+}
+
+.chart-download:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: #3b82f6;
+    transform: translateY(-1px);
 }
 
 .chart-card:hover {
-    transform: translateY(-5px) scale(1.02);
+    transform: translateY(-5px);
     box-shadow: 
-        0 20px 25px -5px rgba(0, 0, 0, 0.1),
-        0 8px 10px -6px rgba(0, 0, 0, 0.05),
-        0 0 20px rgba(59, 130, 246, 0.2);
+        0 10px 20px -8px rgba(0, 0, 0, 0.08),
+        0 4px 8px -4px rgba(0, 0, 0, 0.03);
+    border-color: #3b82f6;
 }
 
 .chart-card:nth-child(n) {
@@ -1053,3 +1085,251 @@ html {
         transform: translateY(0);
     }
 }
+
+.loading-spinner {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.loading-spinner.active {
+    display: block;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error-message {
+    display: none;
+    background: #fee2e2;
+    border: 1px solid #ef4444;
+    color: #991b1b;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.error-message.active {
+    display: block;
+}
+
+/* ...existing code... */
+
+.loading-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+.loading-spinner .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+.loading-spinner p {
+    color: #1e40af;
+    font-weight: 500;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ...existing code... */
+
+.dashboard-actions {
+    margin: 1rem 0 2rem;
+    text-align: right;
+}
+
+.export-dashboard-btn {
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    letter-spacing: 0.025em;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.export-dashboard-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+}
+
+/* ...existing code... */
+
+@media print {
+    .chart-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    
+    .tax-item {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    
+    .summary-cards {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    /* Hide elements we don't want in the PDF */
+    .tabs-container,
+    .upload-section,
+    .dashboard-actions,
+    .period-selector,
+    .chart-download {
+        display: none !important;
+    }
+
+    /* Reset background colors and shadows for better printing */
+    body {
+        background: none !important;
+        color: black !important;
+    }
+
+    .container {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: none !important;
+    }
+
+    /* Ensure charts are clearly visible */
+    .chart-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        background: white !important;
+        border: none !important;
+        box-shadow: none !important;
+        margin-bottom: 2rem !important;
+    }
+
+    /* Ensure text is readable */
+    .card, .tax-item {
+        background: white !important;
+        border: 1px solid #ddd !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    /* Optimize layout for printing */
+    .charts-container {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 2rem !important;
+    }
+
+    /* Force showing any hidden elements we want to print */
+    #dashboard.hidden {
+        display: block !important;
+    }
+
+    /* Remove gradients and backgrounds */
+    body {
+        background: none !important;
+        min-height: auto !important;
+    }
+
+    .container::before {
+        display: none !important;
+    }
+
+    /* Ensure content fits on two pages */
+    .analytics-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.5rem !important;
+        page-break-inside: avoid;
+    }
+
+    .charts-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.5rem !important;
+    }
+
+    .chart-card {
+        height: 300px !important; /* Reduce chart height */
+        page-break-inside: avoid;
+        break-inside: avoid;
+        background: none !important;
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+
+    .tax-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.5rem !important;
+        page-break-inside: avoid;
+    }
+
+    /* Ensure proper spacing */
+    .container {
+        padding: 0 !important;
+    }
+
+    /* Force page breaks at logical points */
+    .analytics-section {
+        page-break-before: always;
+    }
+
+    .tax-summary {
+        page-break-before: always;
+    }
+
+    /* Remove shadows and effects */
+    .card, .tax-item {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        background: none !important;
+    }
+
+    /* Adjust text for better print readability */
+    body {
+        font-size: 10pt !important;
+    }
+
+    h1, h2, h3 {
+        color: black !important;
+    }
+}
+
+/* ...existing code... */

@@ -1780,3 +1780,26 @@ function isBusinessTransaction(transaction) {
            isBusinessIncome(transaction) || 
            isBusinessExpense(transaction);
 }
+
+function downloadChart(button, chartId) {
+    const canvas = document.getElementById(chartId);
+    const chartTitle = button.previousElementSibling.textContent;
+    
+    // Create a temporary link
+    const link = document.createElement('a');
+    link.download = `PayPal_${chartTitle.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.png`;
+    
+    // Convert canvas to blob
+    canvas.toBlob(function(blob) {
+        link.href = URL.createObjectURL(blob);
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }, 'image/png', 1.0);
+}
+
+function exportDashboardPDF() {
+    // Wait for any animations to complete
+    setTimeout(() => {
+        window.print();
+    }, 500);
+}
