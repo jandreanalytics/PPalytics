@@ -36,6 +36,7 @@ function processCSV(file) {
         transactions = parseCSV(text);
         
         if (transactions && transactions.length > 0) {
+            initializePeriodSelectors(transactions);
             const recurring = detectRecurringPayments(transactions);
             if (recurring && recurring.length > 0) {
                 showRecurringModal(recurring);
@@ -360,9 +361,39 @@ function updateTransactionCategories(selections) {
 }
 
 function updateDashboard(transactions) {
+    // Clear all existing charts first
+    clearCharts();
+    // Then update everything with filtered data
     updateSummaryCards(transactions);
     analyzeTransactions(transactions);
-    updateCharts(transactions); // Add this line
+    updateCharts(transactions);
+}
+
+function clearCharts() {
+    const chartIds = [
+        'incomeExpensesChart',
+        'topCustomersChart',
+        'transactionTypeChart',
+        'monthlyRevenueChart',
+        'cashFlowChart',
+        'cumulativeBalanceChart',
+        'customerGrowthChart',
+        'transactionDistributionChart',
+        'dailyPatternChart',
+        'categoryDistributionChart',
+        'paymentMethodsChart',
+        'seasonalRevenueChart'
+    ];
+
+    chartIds.forEach(id => {
+        const canvas = document.getElementById(id);
+        if (canvas) {
+            const chart = Chart.getChart(canvas);
+            if (chart) {
+                chart.destroy();
+            }
+        }
+    });
 }
 
 function updateCharts(transactions) {
@@ -971,9 +1002,28 @@ function formatCurrency(amount, currency = 'USD') {
 }
 
 function analyzeTransactions(transactions) {
-    // Filter out personal transactions first
     const businessTransactions = transactions.filter(t => t.category !== 'personal');
     
+    // Calculate months between first and last transaction
+    const dates = businessTransactions.map(t => new Date(t.date));
+    const firstDate = new Date(Math.min(...dates));
+    const lastDate = new Date(Math.max(...dates));
+    const monthsDiff = (lastDate.getFullYear() - firstDate.getFullYear()) * 12 + 
+                      (lastDate.getMonth() - firstDate.getMonth()) + 1;
+
+    // Calculate revenue growth (comparing first half vs second half)
+    const midPoint = new Date((firstDate.getTime() + lastDate.getTime()) / 2);
+    const firstHalfRevenue = businessTransactions
+        .filter(t => new Date(t.date) < midPoint && t.amount > 0)
+        .reduce((sum, t) => sum + t.amount, 0);
+    const secondHalfRevenue = businessTransactions
+        .filter(t => new Date(t.date) >= midPoint && t.amount > 0)
+        .reduce((sum, t) => sum + t.amount, 0);
+    const revenueGrowth = ((secondHalfRevenue - firstHalfRevenue) / firstHalfRevenue) * 100;
+
+    // Calculate retention metrics
+    const customerRetention = calculateRetentionMetrics(businessTransactions);
+
     const analytics = {
         totalCustomers: new Set(businessTransactions.filter(t => t.amount > 0).map(t => t.name)).size,
         repeatCustomers: getRepeatCustomers(businessTransactions),
@@ -981,13 +1031,94 @@ function analyzeTransactions(transactions) {
             businessTransactions.reduce((sum, t) => sum + Math.abs(t.amount), 0) / businessTransactions.length : 0,
         medianTransaction: getMedianTransaction(businessTransactions),
         totalTransactions: businessTransactions.length,
+        totalRevenue: businessTransactions.reduce((sum, t) => sum + (t.amount > 0 ? t.amount : 0), 0),
+        avgMonthlyRevenue: businessTransactions.reduce((sum, t) => sum + (t.amount > 0 ? t.amount : 0), 0) / monthsDiff,
         peakMonths: getPeakMonths(businessTransactions),
         timeDistribution: getTimeDistribution(businessTransactions),
         topCustomers: getTopCustomers(businessTransactions),
-        topVendors: getTopVendors(businessTransactions)
+        topVendors: getTopVendors(businessTransactions),
+        revenueGrowth: revenueGrowth,
+        customerRetention
     };
     
     updateAnalyticsDisplay(analytics);
+}
+
+function calculateRetentionMetrics(transactions) {
+    const customerTransactions = {};
+    
+    // Group transactions by customer
+    transactions
+        .filter(t => t.amount > 0)
+        .forEach(t => {
+            if (!customerTransactions[t.name]) {
+                customerTransactions[t.name] = [];
+            }
+            customerTransactions[t.name].push({
+                date: new Date(t.date),
+                amount: t.amount
+            });
+        });
+
+    const totalCustomers = Object.keys(customerTransactions).length;
+    const returningCustomers = Object.values(customerTransactions)
+        .filter(dates => dates.length > 1).length;
+    
+    // Calculate average customer age in days
+    const avgAge = Object.values(customerTransactions).reduce((sum, dates) => {
+        const firstDate = Math.min(...dates.map(d => d.date));
+        const lastDate = Math.max(...dates.map(d => d.date));
+        return sum + (lastDate - firstDate) / (1000 * 60 * 60 * 24);
+    }, 0) / totalCustomers;
+
+    // Calculate customer lifetime value (average total revenue per customer)
+    const lifetimeValue = Object.values(customerTransactions).reduce((sum, transactions) => {
+        return sum + transactions.reduce((customerSum, t) => customerSum + t.amount, 0);
+    }, 0) / totalCustomers;
+
+    // Calculate monthly churn rate
+    const monthlyChurn = calculateChurnRate(customerTransactions);
+
+    // Count loyal customers (3+ transactions)
+    const loyalCustomers = Object.values(customerTransactions)
+        .filter(dates => dates.length >= 3).length;
+
+    return {
+        returningRate: (returningCustomers / totalCustomers) * 100,
+        avgCustomerAge: avgAge,
+        loyalCustomers,
+        lifetimeValue,
+        monthlyChurn
+    };
+}
+
+function calculateChurnRate(customerTransactions) {
+    // Get all unique months in the dataset
+    const allDates = Object.values(customerTransactions)
+        .flat()
+        .map(t => t.date)
+        .sort((a, b) => a - b);
+    
+    if (allDates.length < 2) return 0;
+
+    const firstDate = allDates[0];
+    const lastDate = allDates[allDates.length - 1];
+    const monthsDiff = (lastDate.getFullYear() - firstDate.getFullYear()) * 12 + 
+                      (lastDate.getMonth() - firstDate.getMonth());
+    
+    if (monthsDiff === 0) return 0;
+
+    // Count customers who haven't returned in the last month
+    const lastMonth = new Date(lastDate);
+    lastMonth.setMonth(lastMonth.getMonth() - 1);
+    
+    const churnedCustomers = Object.values(customerTransactions)
+        .filter(transactions => {
+            const lastTransaction = Math.max(...transactions.map(t => t.date));
+            return lastTransaction < lastMonth;
+        }).length;
+
+    return (churnedCustomers / Object.keys(customerTransactions).length) * 100;
 }
 
 function getRepeatCustomers(transactions) {
@@ -1023,7 +1154,7 @@ function getPeakMonths(transactions) {
         });
     return Object.entries(monthlyTotals)
         .sort(([,a], [,b]) => b - a)
-        .slice(0, 3);
+        .slice(0,5);
 }
 
 function formatMonth(monthYear) {
@@ -1040,7 +1171,22 @@ function getTimeDistribution(transactions) {
             const hour = new Date(`${t.date} ${t.time}`).getHours();
             hourly[hour]++;
         });
-    return hourly;
+
+    // Convert to array of [hour, count] pairs and sort by count
+    return Array.from(hourly.entries())
+        .map(([hour, count]) => ({
+            hour,
+            count,
+            formattedHour: formatHour(hour)
+        }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 5); // Get top 5 busiest hours
+}
+
+function formatHour(hour) {
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const hour12 = hour % 12 || 12;
+    return `${hour12}:00 ${ampm}`;
 }
 
 function getTopCustomers(transactions) {
@@ -1074,6 +1220,7 @@ function updateAnalyticsDisplay(analytics) {
     document.getElementById('avgTransaction').textContent = formatCurrency(analytics.averageTransaction);
     document.getElementById('medianTransaction').textContent = formatCurrency(analytics.medianTransaction);
     document.getElementById('totalTransactions').textContent = analytics.totalTransactions;
+    document.getElementById('avgMonthlyRevenue').textContent = formatCurrency(analytics.avgMonthlyRevenue);
 
     // Update top customers list
     const topCustomersList = document.getElementById('topCustomersList');
@@ -1101,11 +1248,10 @@ function updateAnalyticsDisplay(analytics) {
     // Update time distribution
     const timeDistribution = document.getElementById('timeDistribution');
     timeDistribution.innerHTML = analytics.timeDistribution
-        .map((count, hour) => `
-            <div class="time-block ${count > 0 ? 'active' : ''}">
-                ${hour}:00
-                <br>
-                ${count}
+        .map(({formattedHour, count}) => `
+            <div class="item">
+                <span>${formattedHour}</span>
+                <span>${count} transactions</span>
             </div>
         `).join('');
 
@@ -1118,10 +1264,111 @@ function updateAnalyticsDisplay(analytics) {
                 <span>${formatCurrency(amount)}</span>
             </div>
         `).join('');
+
+    // Update retention metrics
+    document.getElementById('returningRate').textContent = 
+        `${analytics.customerRetention.returningRate.toFixed(1)}%`;
+    document.getElementById('avgCustomerAge').textContent = 
+        `${Math.round(analytics.customerRetention.avgCustomerAge)} days`;
+    document.getElementById('loyalCustomers').textContent = 
+        analytics.customerRetention.loyalCustomers.toString();
+    document.getElementById('customerLifetimeValue').textContent = 
+        formatCurrency(analytics.customerRetention.lifetimeValue);
+    document.getElementById('monthlyChurn').textContent = 
+        `${analytics.customerRetention.monthlyChurn.toFixed(1)}%`;
 }
 
 function formatMonth(dateStr) {
     const [month, day, year] = dateStr.split('/');
     const date = new Date(`${year}-${month}-01`);
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+}
+
+function initializePeriodSelectors(transactions) {
+    const years = new Set();
+    const months = new Set();
+
+    transactions.forEach(t => {
+        const date = new Date(t.date);
+        years.add(date.getFullYear());
+        months.add(date.getMonth());
+    });
+
+    const yearSelector = document.getElementById('yearSelector');
+    const monthSelector = document.getElementById('monthSelector');
+
+    // Add years
+    [...years].sort().forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearSelector.appendChild(option);
+    });
+
+    // Add months
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                       'July', 'August', 'September', 'October', 'November', 'December'];
+    [...months].sort().forEach(month => {
+        const option = document.createElement('option');
+        option.value = month;
+        option.textContent = monthNames[month];
+        monthSelector.appendChild(option);
+    });
+
+    // Add event listeners
+    yearSelector.addEventListener('change', () => filterTransactions());
+    monthSelector.addEventListener('change', () => filterTransactions());
+}
+
+function filterTransactions() {
+    const year = document.getElementById('yearSelector').value;
+    const month = document.getElementById('monthSelector').value;
+    
+    let filtered = [...transactions];
+
+    if (year !== 'all') {
+        filtered = filtered.filter(t => new Date(t.date).getFullYear() === parseInt(year));
+    }
+    
+    if (month !== 'all') {
+        filtered = filtered.filter(t => new Date(t.date).getMonth() === parseInt(month));
+    }
+
+    // Update the entire dashboard with filtered data
+    updateDashboard(filtered);
+
+    // Update period display
+    const periodDisplay = document.getElementById('periodDisplay');
+    const periodText = getPeriodText(year, month);
+    periodDisplay.textContent = periodText;
+}
+
+function getPeriodText(year, month) {
+    if (year === 'all' && month === 'all') return 'All Time';
+    if (year === 'all') return monthNames[parseInt(month)];
+    if (month === 'all') return year;
+    return `${monthNames[parseInt(month)]} ${year}`;
+}
+
+const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+function updateTimeDistribution(timeDistribution) {
+    const maxCount = Math.max(...timeDistribution);
+    const container = document.getElementById('timeDistribution');
+    container.innerHTML = timeDistribution
+        .map((count, hour) => {
+            const intensity = count > 0 ? (count / maxCount) * 100 : 0;
+            return `
+                <div class="time-block ${count > 0 ? 'active' : ''}" 
+                     style="background-color: ${count > 0 ? `rgba(0, 120, 212, ${intensity/100})` : '#f0f0f0'}">
+                    <div class="time-block-content">
+                        <span class="time-block-hour">${hour}:00</span>
+                        <span class="time-block-count">${count}</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
 }

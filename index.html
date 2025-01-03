@@ -39,6 +39,15 @@
 
             <div class="analytics-section">
                 <h2>Business Analytics</h2>
+                <div class="period-selector">
+                    <select id="yearSelector">
+                        <option value="all">All Years</option>
+                    </select>
+                    <select id="monthSelector">
+                        <option value="all">All Months</option>
+                    </select>
+                    <span id="periodDisplay" class="period-display">All Time</span>
+                </div>
                 
                 <div class="analytics-grid">
                     <div class="card customer-stats">
@@ -64,6 +73,10 @@
                                 <label>Total Transactions</label>
                                 <p id="totalTransactions">0</p>
                             </div>
+                            <div class="stat">
+                                <label>Avg. Monthly Rev.</label>
+                                <p id="avgMonthlyRevenue">$0.00</p>
+                            </div>
                         </div>
                     </div>
 
@@ -78,18 +91,42 @@
                     </div>
 
                     <div class="card time-distribution">
-                        <h3>Transaction Time Distribution</h3>
-                        <div id="timeDistribution" class="time-grid"></div>
+                        <h3>Peak Transaction Hours</h3>
+                        <div id="timeDistribution" class="list-content"></div>
                     </div>
 
                     <div class="card top-vendors">
                         <h3>Top Vendors</h3>
                         <div id="topVendorsList" class="list-content"></div>
                     </div>
+                    <div class="card customer-retention">
+                        <h3>Customer Retention</h3>
+                        <div id="customerRetentionList" class="list-content">
+                            <div class="item">
+                                <span>Returning Rate</span>
+                                <span id="returningRate">0%</span>
+                            </div>
+                            <div class="item">
+                                <span>Avg. Customer Age</span>
+                                <span id="avgCustomerAge">0 days</span>
+                            </div>
+                            <div class="item">
+                                <span>Loyal Customers</span>
+                                <span id="loyalCustomers">0</span>
+                            </div>
+                            <div class="item">
+                                <span>Lifetime Value</span>
+                                <span id="customerLifetimeValue">$0.00</span>
+                            </div>
+                            <div class="item">
+                                <span>Monthly Churn</span>
+                                <span id="monthlyChurn">0%</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Add graph containers -->
             <div class="charts-container">
                 <div class="chart-card">
                     <h3>Income vs Expenses Over Time</h3>
