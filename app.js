@@ -1160,7 +1160,7 @@ function getPeakMonths(transactions) {
         });
     return Object.entries(monthlyTotals)
         .sort(([,a], [,b]) => b - a)
-        .slice(0,5);
+        .slice(0, 6); // Increased from 5 to 6
 }
 
 function formatMonth(monthYear) {
@@ -1204,7 +1204,7 @@ function getTopCustomers(transactions) {
         });
     return Object.entries(customerTotals)
         .sort(([,a], [,b]) => b - a)
-        .slice(0, 5);
+        .slice(0, 10); // Increased from 5 to 10
 }
 
 function getTopVendors(transactions) {
@@ -1216,7 +1216,7 @@ function getTopVendors(transactions) {
         });
     return Object.entries(vendorTotals)
         .sort(([,a], [,b]) => b - a)
-        .slice(0, 5);
+        .slice(0, 10); // Increased from 5 to 10
 }
 
 function updateAnalyticsDisplay(analytics) {
@@ -1396,11 +1396,11 @@ function analyzeTaxMetrics(transactions) {
             business: 0,
             personal: 0,
             deductible: {
-                software: 0,
-                services: 0,
-                supplies: 0,
-                fees: 0,
-                other: 0
+                Software: 0,
+                Services: 0,
+                Supplies: 0,
+                Fees: 0,
+                Other: 0
             }
         },
         quarterly: {
@@ -1455,55 +1455,106 @@ function updateTaxDisplay(taxData) {
         <h3>Business Records Summary (${taxData.selectedYear})</h3>
         <div class="tax-grid">
             <div class="tax-item">
-                <h4>Business Income</h4>
+                <h4>Income Analysis</h4>
                 <p>${formatCurrency(taxData.income.business)}</p>
                 <div class="tax-breakdown">
                     ${Object.entries(taxData.income.sources)
-                        .map(([source, amount]) => 
-                            `<div class="breakdown-item">
-                                <span>${source}:</span>
-                                <span>${formatCurrency(amount)}</span>
-                             </div>`
-                        ).join('')}
+                        .map(([source, amount]) => {
+                            const percentage = ((amount / taxData.income.business) * 100).toFixed(1);
+                            return `
+                                <div class="breakdown-item">
+                                    <span>${source}</span>
+                                    <span>
+                                        ${formatCurrency(amount)}
+                                        <small>(${percentage}%)</small>
+                                    </span>
+                                </div>`;
+                        }).join('')}
+                    <div class="breakdown-item total">
+                        <span>Monthly Average</span>
+                        <span>${formatCurrency(taxData.income.business / 12)}</span>
+                    </div>
                 </div>
             </div>
             <div class="tax-item">
-                <h4>Business Expenses</h4>
+                <h4>Expense Breakdown</h4>
                 <p>${formatCurrency(taxData.expenses.business)}</p>
                 <div class="tax-breakdown">
                     ${Object.entries(taxData.expenses.deductible)
-                        .map(([category, amount]) => 
-                            `<div class="breakdown-item">
-                                <span>${category}:</span>
-                                <span>${formatCurrency(amount)}</span>
-                             </div>`
-                        ).join('')}
+                        .map(([category, amount]) => {
+                            const percentage = ((amount / taxData.expenses.business) * 100).toFixed(1);
+                            return `
+                                <div class="breakdown-item">
+                                    <span>${category}</span>
+                                    <span>
+                                        ${formatCurrency(amount)}
+                                        <small>(${percentage}%)</small>
+                                    </span>
+                                </div>`;
+                        }).join('')}
+                    <div class="breakdown-item total">
+                        <span>Monthly Average</span>
+                        <span>${formatCurrency(taxData.expenses.business / 12)}</span>
+                    </div>
                 </div>
             </div>
             <div class="tax-item">
-                <h4>Net Business Income</h4>
+                <h4>Profit & Loss</h4>
                 <p>${formatCurrency(taxData.income.business - taxData.expenses.business)}</p>
-                <div class="notice">
-                    <small>For tax preparation purposes only.<br>Consult a tax professional for advice.</small>
+                <div class="tax-breakdown">
+                    <div class="breakdown-item">
+                        <span>Profit Margin</span>
+                        <span>${((1 - taxData.expenses.business / taxData.income.business) * 100).toFixed(1)}%</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Monthly Net</span>
+                        <span>${formatCurrency((taxData.income.business - taxData.expenses.business) / 12)}</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Expense Ratio</span>
+                        <span>${((taxData.expenses.business / taxData.income.business) * 100).toFixed(1)}%</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Daily Average</span>
+                        <span>${formatCurrency((taxData.income.business - taxData.expenses.business) / 365)}</span>
+                    </div>
                 </div>
             </div>
             <div class="tax-item">
-                <h4>Quarterly Breakdown</h4>
+                <h4>Quarterly Performance</h4>
                 <div class="quarterly-data">
                     ${Object.entries(taxData.quarterly)
-                        .map(([quarter, data]) => `
-                            <div class="quarter-summary">
-                                <strong>${quarter}</strong>
-                                <div>Income: ${formatCurrency(data.income)}</div>
-                                <div>Expenses: ${formatCurrency(data.expenses)}</div>
-                                <div>Net: ${formatCurrency(data.income - data.expenses)}</div>
-                            </div>
-                        `).join('')}
+                        .map(([quarter, data]) => {
+                            const profit = data.income - data.expenses;
+                            const margin = ((profit / data.income) * 100).toFixed(1);
+                            return `
+                                <div class="quarter-summary">
+                                    <strong>${quarter}</strong>
+                                    <div class="quarter-stats">
+                                        <div class="stat-row">
+                                            <span>Revenue</span>
+                                            <span>${formatCurrency(data.income)}</span>
+                                        </div>
+                                        <div class="stat-row">
+                                            <span>Expenses</span>
+                                            <span>${formatCurrency(data.expenses)}</span>
+                                        </div>
+                                        <div class="stat-row profit">
+                                            <span>Profit</span>
+                                            <span>${formatCurrency(profit)}</span>
+                                        </div>
+                                        <div class="stat-row">
+                                            <span>Margin</span>
+                                            <span>${margin}%</span>
+                                        </div>
+                                    </div>
+                                </div>`;
+                        }).join('')}
                 </div>
             </div>
         </div>
         <div class="tax-actions">
-            <button onclick="exportTaxData()" class="export-btn">Export Records</button>
+            <button onclick="exportTaxData()" class="export-btn">Export Full Report</button>
         </div>
     `;
 }
@@ -1528,6 +1579,10 @@ function exportTaxData() {
     
     // Create workbook with multiple sheets
     const wb = XLSX.utils.book_new();
+
+    // Generate monthly ledger data
+    const monthlyLedger = generateMonthlyLedger(yearTransactions);
+    const monthlyIncome = generateMonthlyIncome(yearTransactions);
 
     const sheets = {
         "Summary": [
@@ -1570,6 +1625,14 @@ function exportTaxData() {
                     t.category,
                     t.amount > 0 ? 'Income' : 'Expense'
                 ])
+        ],
+        "Monthly Ledger": [
+            ['Date', 'Description', 'Type', 'Income', 'Expense', 'Running Balance'],
+            ...monthlyLedger
+        ],
+        "Monthly Income Summary": [
+            ['Month', 'Income', 'Expenses', 'Net', 'Transaction Count'],
+            ...monthlyIncome
         ]
     };
 
@@ -1583,6 +1646,65 @@ function exportTaxData() {
     const timestamp = new Date().toISOString().split('T')[0];
     const fileName = `PayPal_Business_Records_${selectedYear}_${timestamp}.xlsx`;
     XLSX.writeFile(wb, fileName);
+}
+
+function generateMonthlyLedger(transactions) {
+    let balance = 0;
+    return transactions
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .map(t => {
+            const amount = Math.abs(t.amount);
+            balance += t.amount;
+            return [
+                new Date(t.date),
+                t.name,
+                t.type,
+                t.amount > 0 ? amount : '',     // Income column
+                t.amount < 0 ? amount : '',     // Expense column
+                balance                         // Running balance
+            ];
+        });
+}
+
+function generateMonthlyIncome(transactions) {
+    // Group transactions by month
+    const monthlyData = transactions.reduce((acc, t) => {
+        const date = new Date(t.date);
+        const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        
+        if (!acc[monthKey]) {
+            acc[monthKey] = {
+                income: 0,
+                expenses: 0,
+                count: 0
+            };
+        }
+        
+        if (t.amount > 0) {
+            acc[monthKey].income += t.amount;
+        } else {
+            acc[monthKey].expenses += Math.abs(t.amount);
+        }
+        acc[monthKey].count++;
+        
+        return acc;
+    }, {});
+
+    // Convert to array format for Excel
+    return Object.entries(monthlyData)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([month, data]) => {
+            const [year, monthNum] = month.split('-');
+            const monthName = new Date(year, monthNum - 1)
+                .toLocaleString('en-US', { month: 'long', year: 'numeric' });
+            return [
+                monthName,
+                data.income,
+                data.expenses,
+                data.income - data.expenses,
+                data.count
+            ];
+        });
 }
 
 function isBusinessIncome(transaction) {
@@ -1613,26 +1735,26 @@ function categorizeBusinessExpense(transaction) {
         name.includes('adobe') || 
         name.includes('microsoft') || 
         name.includes('dropbox')) {
-        return 'software';
+        return 'Software';
     }
     
     if (name.includes('hosting') || 
         name.includes('service') || 
         type.includes('service')) {
-        return 'services';
+        return 'Services';
     }
     
     if (name.includes('paypal fee') || 
         name.includes('processing fee')) {
-        return 'fees';
+        return 'Fees';
     }
     
     if (name.includes('supplies') || 
         name.includes('materials')) {
-        return 'supplies';
+        return 'Supplies';
     }
     
-    return 'other';
+    return 'Other';
 }
 
 function isBusinessTransaction(transaction) {
