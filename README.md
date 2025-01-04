@@ -1,95 +1,56 @@
-`<a id="readme-top"></a>`
+# PPalytics - PayPal Analytics Dashboard
 
-[Contributors][contributors-url]
-[MIT License][license-url]
-[LinkedIn][linkedin-url]
-
-<br />
 <div align="center">
-  <h3 align="center">PPalytics</h3>
+  <a href="http://jkandre.science/projects/paypal-dashboard">
+    <img src="PayPal-Dashboard.png" alt="PPalytics Dashboard" width="800">
+  </a>
 
 <p align="center">
-    A powerful, browser-based analytics tool for PayPal transaction data with advanced visualization and business insights
+    A powerful, browser-based analytics tool for PayPal transaction data
     <br />
-    <a href="https://github.com/jandreanalytics/PPalytics"><strong>Explore the docs »</strong></a>
+    <a href="https://jandreanalytics.github.io/PPalytics/"><strong>Live Demo »</strong></a>
     <br />
     <br />
-    <a href="https://jkandre.science/projects/paypal-dashboard">View Demo</a>
-    ·
     <a href="https://github.com/jandreanalytics/PPalytics/issues">Report Bug</a>
     ·
     <a href="https://github.com/jandreanalytics/PPalytics/issues">Request Feature</a>
   </p>
 </div>
 
-<!-- TABLE OF CONTENTS -->
+## About
 
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li><a href="#about-the-project">About The Project</a></li>
-    <li><a href="#key-features">Key Features</a></li>
-    <li><a href="#built-with">Built With</a></li>
-    <li><a href="#getting-started">Getting Started</a></li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#privacy-and-security">Privacy & Security</a></li>
-    <li><a href="#development-story">Development Story</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ol>
-</details>
+PPalytics is a client-side web application that transforms your PayPal transaction data into actionable business insights. Originally built as a personal tool, it evolved into a comprehensive analytics platform that processes data entirely in your browser - ensuring complete privacy and security.
 
-## About The Project
+## Features
 
-<div align="center">
-  <img src="PayPal-Dashboard.png" alt="PPalytics Dashboard Preview">
-</div>
+- 📊 **12 Interactive Visualizations**
 
-PPalytics is a client-side web application I developed to solve a common challenge faced by small business owners and freelancers: making sense of their PayPal transaction data. What started as a personal tool to analyze my own business transactions evolved into a comprehensive analytics platform that helps users:
+  - Income vs expenses trends
+  - Customer growth patterns
+  - Seasonal analysis
+  - Transaction distributions
+- 🔄 **Smart Transaction Processing**
 
-- Visualize income and expense patterns
-- Track customer retention and growth
-- Identify business trends and seasonality
-- Generate tax-ready reports
-- Monitor recurring payments
+  - Automatic business detection
+  - Recurring payment identification
+  - Multi-currency support
+  - Customer retention tracking
+- 💰 **Tax Preparation Tools**
 
-### Origin Story
+  - Quarterly breakdowns
+  - Category sorting
+  - Expense tracking
+  - Excel report generation
+- 🔒 **Privacy First**
 
-I built PPalytics initially for my own use when I noticed PayPal's built-in analytics weren't providing the depth of insight I needed for business decisions. After sharing it with other freelancers and receiving positive feedback, I refined it into a more comprehensive solution that could help others in similar situations.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## Key Features
-
-- 📊 **12 Interactive Visualizations** including income vs expenses, customer growth, and seasonal patterns
-- 🔄 **Automatic Business Transaction Detection** with smart categorization
-- 📈 **Customer Retention Analytics** with detailed metrics and trends
-- 💰 **Tax Preparation Tools** with quarterly breakdowns and category sorting
-- 🔒 **100% Client-Side Processing** for maximum privacy and security
-- 📱 **Responsive Design** that works on all devices
-- 📥 **Excel Report Export** for accounting and tax purposes
-
-### Privacy & Security Focus
-
-- No server uploads required
-- All data processing happens in your browser
-- No data storage or collection
-- Works offline after initial page load
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## Built With
-
-* ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
-* ![Chart.js](https://img.shields.io/badge/chart.js-F5788D.svg?style=for-the-badge&logo=chart.js&logoColor=white)
-* ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
-* ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+  - 100% client-side processing
+  - No data storage
+  - Works offline
+  - Zero server uploads
 
 ## Getting Started
 
-1. Visit the [dashboard website](https://jkandre.science/projects/paypal-dashboard)
+1. Visit [PPalytics Dashboard](https://jkandre.science/projects/paypal-dashboard)
 2. Export your PayPal data:
    ```
    PayPal.com -> Activity -> Statements -> Download
@@ -97,9 +58,9 @@ I built PPalytics initially for my own use when I noticed PayPal's built-in anal
    Choose CSV format
    ```
 3. Drop the CSV file into the dashboard
-4. Start exploring your business insights
+4. Start exploring your insights
 
-### Local Installation
+## Local Development
 
 1. Clone the repository
    ```sh
@@ -244,10 +205,14 @@ Project Link: [https://github.com/jandreanalytics/paypal-transaction-dashboard](
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
+
+`````
+
+`````
+
 [contributors-shield]: https://img.shields.io/github/contributors/jandreanalytics/PPalytics.svg?style=for-the-badge
 [contributors-url]: https://github.com/jandreanalytics/PPalytics/graphs/contributors
 [license-shield]: https://img.shields.io/github/license/jandreanalytics/PPalytics.svg?style=for-the-badge
 [license-url]: https://github.com/jandreanalytics/PPalytics/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/jeremy-andre-a18925241/
-`````
