@@ -1,4 +1,4 @@
-# PPalytics - PayPal Analytics Dashboard
+# PPalytics - Un-Official PayPal Analytics Dashboard
 
 <div align="center">
   <a href="http://jkandre.science/projects/paypal-dashboard">
